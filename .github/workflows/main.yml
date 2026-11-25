@@ -23,7 +23,7 @@ jobs:
           git config --global --add safe.directory '*' && \
           
           git submodule update --init --remote && \
-          make -C libs/libnx/nx install -j$(nproc) && \
+          make -C libs/libnx install -j$(nproc) && \
           make switch
           
           
