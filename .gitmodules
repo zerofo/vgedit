@@ -10,3 +10,6 @@
 [submodule "libs/librpxloader"]
 	path = libs/librpxloader
 	url = https://github.com/wiiu-env/librpxloader.git
+[submodule "libs/libnx"]
+	path = libs/libnx
+	url = https://github.com/switchbrew/libnx

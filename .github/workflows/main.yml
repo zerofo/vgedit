@@ -1,37 +1,43 @@
-name: Build console apps
+---
+name: ci
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - main
-      - sdl2-only
-  pull_request:
-    branches:
-      - main
+      - master
 
 jobs:
-  all:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - platform: wiiu
-            ext: wuhb
-          - platform: switch
-            ext: nro
-          - platform: wii
-            ext: dol
-          - platform: 3ds
-            ext: 3dsx
-    container:
-      image: ghcr.io/fortheusers/sealeo
+    container: devkitpro/devkita64
+
     steps:
-    - uses: actions/checkout@main
+    - name: Checkout project
+      uses: actions/checkout@master
       with:
         submodules: recursive
-    - name: Build ${{ matrix.platform }}
-      run: make ${{ matrix.platform }}
-    - uses: actions/upload-artifact@v4
+
+    - name: Build project
+      run: |
+          git config --global --add safe.directory '*' && \
+          git submodule update --init lib/libnx && \
+          make -C lib/libnx/nx install -j$(nproc) && \
+          make  -j2
+          
+          
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
       with:
-        name: vgedit.${{ matrix.ext }}
-        path: /__w/vgedit/vgedit/vgedit.${{ matrix.ext }}
+        path: vgedit.nro
+        
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.release_token }}
+        file: vgedit.nro
+        tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true
+        make_latest: true 
+        release_name: ${{ github.event.repository.updated_at }}
