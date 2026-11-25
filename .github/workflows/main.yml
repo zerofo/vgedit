@@ -23,7 +23,7 @@ jobs:
           git config --global --add safe.directory '*' && \
           git submodule update --init libs/libnx && \
           make -C libs/libnx/nx install -j$(nproc) && \
-          make  -j2
+          make switch -j2
           
           
     - name: Upload artifacts
