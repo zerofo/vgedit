@@ -24,7 +24,7 @@ jobs:
           
           git submodule update --init --remote && \
           make -C libs/libnx/nx install -j$(nproc) && \
-          make switch -j2
+          make switch
           
           
     - name: Upload artifacts
