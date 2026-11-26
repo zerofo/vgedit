@@ -1,0 +1,5 @@
+*link:
++ -T %:getenv(DEVKITPRO /libnx/switch.ld) --no-dynamic-linker --gc-sections -z text -z now -z nodynamic-undefined-weak --build-id=sha1 --nx-module-name
+
+*startfile:
+crti%O%s crtbegin%O%s --require-defined=main

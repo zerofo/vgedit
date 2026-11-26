@@ -14,4 +14,9 @@ VPATH 		+= $(CHESTO_DIR)/libs/wiiu_kbd
 INCLUDES  	+= ../libs/librpxloader/include
 endif
 
+# 主仓库统一发起对 libnx/chesto 的临时文本修改（幂等，不提交子模块改动）
+ifeq (switch,$(MAKECMDGOALS))
+$(shell python3 $(CURDIR)/fix_pie.py)
+endif
+
 include libs/chesto/Makefile
